@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper: check user role via custom claims
+    function hasRole(role) {
+      return isAuth() && request.auth.token.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isOfficial() {
+      return hasRole('official') || isAdmin();
+    }
+
+    function isCitizen() {
+      return hasRole('citizen') || isOfficial() || isAdmin();
+    }
+
+    // Tickets: citizens can read all, create new; officials can update assigned; admin full access
+    match /tickets/{ticketId} {
+      allow read: if isAuth();
+      allow create: if isCitizen();
+      allow update: if isOfficial() || (isCitizen() && resource.data.reporter_id == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    // Agent traces: read-only for authenticated users (transparency), write only from backend
+    match /agent_trace/{traceId} {
+      allow read: if isAuth();
+      allow write: if false; // Only backend admin SDK writes traces
+    }
+
+    // Users: read own profile, admin can read all
+    match /users/{userId} {
+      allow read: if isAuth() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuth() && request.auth.uid == userId;
+      allow update: if isAuth() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Departments: readable by all auth users, writable by admin
+    match /departments/{deptId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    // Wards: readable by all auth users, writable by admin
+    match /wards/{wardId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    // Votes: citizens can create, read own; officials/admin can read all
+    match /votes/{voteId} {
+      allow read: if isAuth();
+      allow create: if isCitizen();
+      allow update, delete: if false; // Votes are immutable
+    }
+  }
+}

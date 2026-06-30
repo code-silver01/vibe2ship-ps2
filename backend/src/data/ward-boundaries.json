@@ -1,0 +1,76 @@
+{
+  "wards": [
+    {
+      "id": "ward_01",
+      "name": "Koramangala",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.615, 12.925], [77.635, 12.925], [77.635, 12.945], [77.615, 12.945], [77.615, 12.925]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    },
+    {
+      "id": "ward_02",
+      "name": "Indiranagar",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.635, 12.960], [77.655, 12.960], [77.655, 12.980], [77.635, 12.980], [77.635, 12.960]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    },
+    {
+      "id": "ward_03",
+      "name": "Jayanagar",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.575, 12.915], [77.595, 12.915], [77.595, 12.935], [77.575, 12.935], [77.575, 12.915]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    },
+    {
+      "id": "ward_04",
+      "name": "HSR Layout",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.635, 12.905], [77.655, 12.905], [77.655, 12.925], [77.635, 12.925], [77.635, 12.905]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    },
+    {
+      "id": "ward_05",
+      "name": "Whitefield",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.740, 12.960], [77.760, 12.960], [77.760, 12.980], [77.740, 12.980], [77.740, 12.960]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    },
+    {
+      "id": "ward_06",
+      "name": "Malleshwaram",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.555, 12.990], [77.575, 12.990], [77.575, 13.010], [77.555, 13.010], [77.555, 12.990]]]
+      },
+      "departments": ["roads", "water", "sanitation", "parks"]
+    },
+    {
+      "id": "ward_07",
+      "name": "BTM Layout",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.605, 12.905], [77.625, 12.905], [77.625, 12.920], [77.605, 12.920], [77.605, 12.905]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    },
+    {
+      "id": "ward_08",
+      "name": "Electronic City",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[77.650, 12.840], [77.680, 12.840], [77.680, 12.870], [77.650, 12.870], [77.650, 12.840]]]
+      },
+      "departments": ["roads", "water", "sanitation", "electricity"]
+    }
+  ]
+}

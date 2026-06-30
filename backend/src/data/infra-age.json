@@ -1,0 +1,24 @@
+{
+  "infrastructure": [
+    { "ward": "ward_01", "type": "road", "age_years": 15, "last_maintained": "2023-01-15", "condition_score": 0.3 },
+    { "ward": "ward_01", "type": "water_pipe", "age_years": 25, "last_maintained": "2021-06-10", "condition_score": 0.2 },
+    { "ward": "ward_01", "type": "drain", "age_years": 20, "last_maintained": "2022-09-01", "condition_score": 0.4 },
+    { "ward": "ward_02", "type": "road", "age_years": 8, "last_maintained": "2024-03-20", "condition_score": 0.7 },
+    { "ward": "ward_02", "type": "water_pipe", "age_years": 12, "last_maintained": "2023-11-05", "condition_score": 0.6 },
+    { "ward": "ward_02", "type": "drain", "age_years": 10, "last_maintained": "2024-01-15", "condition_score": 0.65 },
+    { "ward": "ward_03", "type": "road", "age_years": 20, "last_maintained": "2022-04-10", "condition_score": 0.35 },
+    { "ward": "ward_03", "type": "water_pipe", "age_years": 30, "last_maintained": "2020-08-20", "condition_score": 0.15 },
+    { "ward": "ward_03", "type": "streetlight", "age_years": 5, "last_maintained": "2024-06-01", "condition_score": 0.8 },
+    { "ward": "ward_04", "type": "road", "age_years": 5, "last_maintained": "2024-09-01", "condition_score": 0.85 },
+    { "ward": "ward_04", "type": "drain", "age_years": 6, "last_maintained": "2024-07-15", "condition_score": 0.75 },
+    { "ward": "ward_05", "type": "road", "age_years": 3, "last_maintained": "2025-01-10", "condition_score": 0.9 },
+    { "ward": "ward_05", "type": "water_pipe", "age_years": 4, "last_maintained": "2024-12-01", "condition_score": 0.85 },
+    { "ward": "ward_06", "type": "road", "age_years": 25, "last_maintained": "2021-03-15", "condition_score": 0.25 },
+    { "ward": "ward_06", "type": "water_pipe", "age_years": 35, "last_maintained": "2019-06-20", "condition_score": 0.1 },
+    { "ward": "ward_06", "type": "drain", "age_years": 28, "last_maintained": "2020-11-01", "condition_score": 0.2 },
+    { "ward": "ward_07", "type": "road", "age_years": 10, "last_maintained": "2023-08-15", "condition_score": 0.5 },
+    { "ward": "ward_07", "type": "streetlight", "age_years": 8, "last_maintained": "2024-02-01", "condition_score": 0.6 },
+    { "ward": "ward_08", "type": "road", "age_years": 2, "last_maintained": "2025-03-01", "condition_score": 0.95 },
+    { "ward": "ward_08", "type": "water_pipe", "age_years": 3, "last_maintained": "2025-01-15", "condition_score": 0.9 }
+  ]
+}

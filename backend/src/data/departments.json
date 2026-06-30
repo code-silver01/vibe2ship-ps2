@@ -1,0 +1,52 @@
+{
+  "departments": [
+    {
+      "id": "roads",
+      "name": "Roads & Infrastructure",
+      "issue_types": ["pothole", "road_damage", "footpath_damage"],
+      "avg_resolution_hours": 72,
+      "sla_hours": 120,
+      "officials": ["official_roads_01", "official_roads_02"]
+    },
+    {
+      "id": "water",
+      "name": "Water Supply & Sewerage",
+      "issue_types": ["water_leak", "sewage_overflow", "drainage_block"],
+      "avg_resolution_hours": 48,
+      "sla_hours": 72,
+      "officials": ["official_water_01", "official_water_02"]
+    },
+    {
+      "id": "sanitation",
+      "name": "Solid Waste Management",
+      "issue_types": ["garbage_dump", "encroachment"],
+      "avg_resolution_hours": 36,
+      "sla_hours": 48,
+      "officials": ["official_sanit_01"]
+    },
+    {
+      "id": "electricity",
+      "name": "Electrical Maintenance",
+      "issue_types": ["streetlight_outage"],
+      "avg_resolution_hours": 24,
+      "sla_hours": 48,
+      "officials": ["official_elec_01"]
+    },
+    {
+      "id": "environment",
+      "name": "Environment & Parks",
+      "issue_types": ["tree_fall", "noise_pollution", "air_quality"],
+      "avg_resolution_hours": 96,
+      "sla_hours": 168,
+      "officials": ["official_env_01"]
+    },
+    {
+      "id": "general",
+      "name": "General Administration",
+      "issue_types": ["other"],
+      "avg_resolution_hours": 120,
+      "sla_hours": 240,
+      "officials": ["official_gen_01"]
+    }
+  ]
+}
