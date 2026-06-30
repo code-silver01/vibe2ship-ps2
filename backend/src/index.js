@@ -4,6 +4,8 @@
  */
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import config from './config/env.js';
 import analyticsService from './services/AnalyticsService.js';
 import ticketRoutes from './routes/tickets.js';
@@ -14,6 +16,9 @@ import analyticsRoutes from './routes/analytics.js';
 import chatRoutes from './routes/chat.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import orchestrator from './orchestrator/Orchestrator.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -28,7 +33,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-// ── Routes ─────────────────────────────────────────────────────
+// ── API Routes ─────────────────────────────────────────────────
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
@@ -47,8 +52,17 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// ── Error Handler ──────────────────────────────────────────────
-app.use(errorHandler);
+// ── API Error Handler ──────────────────────────────────────────
+app.use('/api', errorHandler);
+
+// ── Serve Frontend Static Files ────────────────────────────────
+const publicDir = path.join(__dirname, '..', 'public');
+app.use(express.static(publicDir));
+
+// SPA fallback — any non-API route returns index.html
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
+});
 
 // ── Initialize Services ────────────────────────────────────────
 analyticsService.init();

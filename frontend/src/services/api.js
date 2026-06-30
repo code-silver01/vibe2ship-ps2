@@ -5,7 +5,7 @@
 
 // In development with Vite, we use the proxy set in vite.config.js
 // In production, we assume the frontend is hosted alongside the backend or the API path is absolute.
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 class ApiService {
   constructor() {

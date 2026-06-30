@@ -10,18 +10,19 @@ import config from '../config/env.js';
  * Middleware: require authentication
  */
 export async function requireAuth(req, res, next) {
+  // In mock mode, always allow through with mock identity
+  if (config.useMock) {
+    req.user = {
+      uid: req.headers['x-mock-uid'] || 'demo_citizen',
+      role: req.headers['x-mock-role'] || 'citizen',
+      email: 'demo@civicpulse.dev',
+    };
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    // In mock mode, allow requests with mock user header
-    if (config.useMock) {
-      req.user = {
-        uid: req.headers['x-mock-uid'] || 'demo_citizen',
-        role: req.headers['x-mock-role'] || 'citizen',
-        email: 'demo@civicpulse.dev',
-      };
-      return next();
-    }
     return res.status(401).json({ error: 'Missing or invalid authorization header' });
   }
 

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function ReportPage() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -63,7 +65,7 @@ export default function ReportPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-display font-bold">Report an Issue</h1>
+        <h1 className="text-3xl font-display font-bold">{t('report_issue')}</h1>
         <div className="flex items-center mt-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="flex items-center">
@@ -93,7 +95,7 @@ export default function ReportPage() {
           {/* Step 1: Media Upload */}
           {step === 1 && (
             <div className="space-y-6 animate-fade-in">
-              <h2 className="text-xl font-semibold mb-4 text-civic-100">Capture the Issue</h2>
+              <h2 className="text-xl font-semibold mb-4 text-civic-100">{t('capture_issue')}</h2>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative">
@@ -107,7 +109,7 @@ export default function ReportPage() {
                     imageFile ? 'border-success-500 bg-success-500/10 shadow-[inset_0_0_20px_rgba(16,185,129,0.2)]' : 'border-civic-700 hover:border-civic-500 hover:bg-civic-800/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]'
                   }`}>
                     <div className="text-4xl mb-2 drop-shadow-md">📸</div>
-                    <div className="font-medium text-white line-clamp-1">{imageFile ? imageFile.name : 'Upload Photo'}</div>
+                    <div className="font-medium text-white line-clamp-1">{imageFile ? imageFile.name : t('upload_photo')}</div>
                     <p className="text-xs text-civic-400 mt-1">{imageFile ? 'Click to change' : 'Tap to select an image'}</p>
                   </div>
                 </div>
@@ -124,7 +126,7 @@ export default function ReportPage() {
                     audioFile ? 'border-success-500 bg-success-500/10 shadow-[inset_0_0_20px_rgba(16,185,129,0.2)]' : 'border-civic-700 hover:border-civic-500 hover:bg-civic-800/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]'
                   }`}>
                     <div className="text-4xl mb-2 drop-shadow-md">🎤</div>
-                    <div className="font-medium text-white line-clamp-1">{audioFile ? audioFile.name : 'Upload/Record Voice'}</div>
+                    <div className="font-medium text-white line-clamp-1">{audioFile ? audioFile.name : t('upload_voice')}</div>
                     <p className="text-xs text-civic-400 mt-1">{audioFile ? 'Click to change' : 'Tap to record or select'}</p>
                   </div>
                 </div>
@@ -141,7 +143,7 @@ export default function ReportPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-civic-300 mb-1">Language</label>
+                <label className="block text-sm font-medium text-civic-300 mb-1">{t('language_select')}</label>
                 <select 
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
@@ -158,7 +160,7 @@ export default function ReportPage() {
           {/* Step 2: Location */}
           {step === 2 && (
             <div className="space-y-6 animate-fade-in">
-              <h2 className="text-xl font-semibold mb-4 text-civic-100">Confirm Location</h2>
+              <h2 className="text-xl font-semibold mb-4 text-civic-100">{t('confirm_location')}</h2>
               
               <div 
                 className="bg-civic-950 rounded-lg aspect-video flex items-center justify-center border border-civic-700 relative overflow-hidden group cursor-pointer shadow-[0_0_30px_rgba(139,92,246,0.15)]"
@@ -178,7 +180,7 @@ export default function ReportPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-civic-300 mb-1">Address/Landmark</label>
+                <label className="block text-sm font-medium text-civic-300 mb-1">{t('address_landmark')}</label>
                 <input 
                   type="text" 
                   className="input" 
@@ -193,10 +195,10 @@ export default function ReportPage() {
           {/* Step 3: Details & Submit */}
           {step === 3 && (
             <div className="space-y-6 animate-fade-in">
-              <h2 className="text-xl font-semibold mb-4 text-civic-100">Additional Details</h2>
+              <h2 className="text-xl font-semibold mb-4 text-civic-100">{t('additional_details')}</h2>
               
               <div>
-                <label className="block text-sm font-medium text-civic-300 mb-1">Description (Optional)</label>
+                <label className="block text-sm font-medium text-civic-300 mb-1">{t('description_opt')}</label>
                 <textarea 
                   className="input min-h-[120px]" 
                   value={description}
@@ -206,10 +208,10 @@ export default function ReportPage() {
               </div>
 
               <div className="bg-civic-800/30 rounded-lg p-5 border border-civic-700/50 shadow-inner">
-                <h3 className="text-sm font-semibold mb-3 text-civic-200">Summary</h3>
+                <h3 className="text-sm font-semibold mb-3 text-civic-200">{t('summary')}</h3>
                 <ul className="text-sm text-civic-300 space-y-2">
-                  <li className="flex items-center"><span className="w-4 h-4 bg-civic-600 rounded-full inline-block mr-2 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></span> Media: {imageFile ? 'Photo' : ''} {imageFile && audioFile ? '&' : ''} {audioFile ? 'Voice' : ''} {!imageFile && !audioFile ? 'None' : ''}</li>
-                  <li className="flex items-center"><span className="w-4 h-4 bg-civic-600 rounded-full inline-block mr-2 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></span> Location: {location.address} ({location.lat.toFixed(4)}, {location.lng.toFixed(4)})</li>
+                  <li className="flex items-center"><span className="w-4 h-4 bg-civic-600 rounded-full inline-block mr-2 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></span> {t('media')}: {imageFile ? 'Photo' : ''} {imageFile && audioFile ? '&' : ''} {audioFile ? 'Voice' : ''} {!imageFile && !audioFile ? 'None' : ''}</li>
+                  <li className="flex items-center"><span className="w-4 h-4 bg-civic-600 rounded-full inline-block mr-2 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></span> {t('location')}: {location.address} ({location.lat.toFixed(4)}, {location.lng.toFixed(4)})</li>
                 </ul>
               </div>
             </div>
@@ -219,7 +221,7 @@ export default function ReportPage() {
           <div className="mt-8 flex justify-between pt-6 border-t border-civic-800">
             {step > 1 ? (
               <button type="button" onClick={handlePrev} className="btn btn-secondary">
-                Back
+                {t('back')}
               </button>
             ) : <div></div>}
             
@@ -231,9 +233,9 @@ export default function ReportPage() {
               {loading ? (
                 <span className="flex items-center justify-center">
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                  Processing...
+                  {t('processing')}
                 </span>
-              ) : step === 3 ? 'Submit Report' : 'Next'}
+              ) : step === 3 ? t('submit_report') : t('next')}
             </button>
           </div>
         </form>

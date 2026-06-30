@@ -48,12 +48,12 @@ function AppRoutes() {
           {/* Official Hub Route (System Overview merged in here) */}
           <Route 
             path="/official" 
-            element={<RequireAuth allowedRoles={['official']}><OfficialDashboardPage /></RequireAuth>} 
+            element={<RequireAuth allowedRoles={['official', 'admin']}><OfficialDashboardPage /></RequireAuth>} 
           />
 
           <Route 
             path="/heatmap" 
-            element={<RequireAuth allowedRoles={['official']}><HeatmapPage /></RequireAuth>} 
+            element={<RequireAuth allowedRoles={['official', 'admin']}><HeatmapPage /></RequireAuth>} 
           />
         </Routes>
       </main>

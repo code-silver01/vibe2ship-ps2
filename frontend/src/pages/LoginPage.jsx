@@ -44,12 +44,12 @@ export default function LoginPage() {
         // Refresh to get the actual role from backend if it wasn't mocked
         await refreshProfile();
         const prefix = email.split('@')[0];
-        finalRole = prefix === 'official' ? 'official' : 'citizen';
+        finalRole = prefix === 'official' ? 'official' : (prefix === 'admin' ? 'admin' : 'citizen');
       }
 
       // Navigate to role-specific dashboard if no explicit 'from' path
       if (from === '/') {
-        if (finalRole === 'official') {
+        if (finalRole === 'official' || finalRole === 'admin') {
           navigate('/official');
         } else {
           navigate('/dashboard');
@@ -118,6 +118,7 @@ export default function LoginPage() {
                   >
                     <option value="citizen">Citizen</option>
                     <option value="official">City Official</option>
+                    <option value="admin">System Admin</option>
                   </select>
                 </div>
               </>
@@ -185,12 +186,15 @@ export default function LoginPage() {
         {isMockMode && (
           <div className="mt-8 pt-6 border-t border-civic-800">
             <p className="text-sm text-civic-400 text-center mb-4">Quick login for testing:</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button onClick={() => handleMockLogin('citizen')} type="button" className="btn btn-secondary text-xs">
                 Citizen
               </button>
               <button onClick={() => handleMockLogin('official')} type="button" className="btn btn-secondary text-xs border-warning-500 text-warning-400">
                 City Official
+              </button>
+              <button onClick={() => handleMockLogin('admin')} type="button" className="btn btn-secondary text-xs border-danger-500 text-danger-400">
+                Admin
               </button>
             </div>
           </div>

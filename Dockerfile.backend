@@ -19,5 +19,5 @@ RUN mkdir -p data
 
 EXPOSE 3001
 
-# Start dev server
-CMD ["npm", "run", "dev"]
+# Start server
+CMD ["npm", "start"]

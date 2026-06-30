@@ -1,16 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import api from '../services/api';
+import html2canvas from 'html2canvas';
 
 export default function TrackerPage() {
   const { id } = useParams();
   const { role } = useAuth();
+  const { t } = useLanguage();
   const [ticket, setTicket] = useState(null);
   const [traces, setTraces] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [showTrace, setShowTrace] = useState(false);
+  const proofCardRef = useRef(null);
+  const [generatingProof, setGeneratingProof] = useState(false);
 
   useEffect(() => {
     const fetchTicket = async () => {
@@ -66,6 +71,34 @@ export default function TrackerPage() {
     }
   };
 
+  const handleDownloadProof = async () => {
+    if (!proofCardRef.current) return;
+    setGeneratingProof(true);
+    
+    // Temporarily make it visible for canvas render if it was hidden
+    proofCardRef.current.style.display = 'block';
+    
+    try {
+      const canvas = await html2canvas(proofCardRef.current, {
+        scale: 2,
+        backgroundColor: '#0a0514', // civic-950
+        useCORS: true,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `CivicPulse_Proof_${ticket.id}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Failed to generate proof card', err);
+      alert('Could not generate image');
+    } finally {
+      // Re-hide it
+      proofCardRef.current.style.display = 'none';
+      setGeneratingProof(false);
+    }
+  };
+
   if (loading && !ticket) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -117,6 +150,81 @@ export default function TrackerPage() {
               {actionLoading ? 'Processing...' : 'Mark Resolved (Upload Photo)'}
             </button>
           )}
+
+          {['verified', 'closed'].includes(ticket.status) && (
+            <button 
+              onClick={handleDownloadProof}
+              disabled={generatingProof}
+              className="btn bg-gradient-to-r from-civic-600 to-success-600 hover:from-civic-500 hover:to-success-500 text-white border-0 shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center"
+            >
+              <span className="mr-2">📸</span> {generatingProof ? 'Generating...' : 'Share Proof Card'}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Hidden Proof Card for HTML2Canvas */}
+      <div 
+        ref={proofCardRef} 
+        className="absolute top-[-9999px] left-[-9999px] w-[600px] bg-civic-950 border-2 border-civic-700 p-8 rounded-2xl shadow-2xl text-white font-sans"
+        style={{ display: 'none' }}
+      >
+        <div className="flex justify-between items-center mb-6 border-b border-civic-800 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-civic-600 rounded-lg flex items-center justify-center font-bold text-xl">🏛️</div>
+            <div>
+              <h2 className="text-2xl font-bold font-display leading-tight">{t('app_name')}</h2>
+              <div className="text-xs text-civic-400 uppercase tracking-widest">Verified Resolution</div>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-success-400 font-bold text-lg">VERIFIED ✓</div>
+            <div className="text-xs text-civic-500 font-mono">ID: {ticket.id.slice(0, 8)}</div>
+          </div>
+        </div>
+
+        <h3 className="text-xl font-bold capitalize mb-2">{(ticket.issue_type || 'Issue').replace(/_/g, ' ')}</h3>
+        <p className="text-civic-300 text-sm mb-6 flex items-center gap-2">
+          📍 {ticket.location?.address || ticket.location?.ward || 'Unknown'}
+        </p>
+
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-civic-900 rounded-lg p-2 border border-civic-800">
+            <div className="text-xs text-civic-400 mb-2 uppercase text-center font-bold">Reported</div>
+            <div className="aspect-video bg-civic-800 rounded flex items-center justify-center overflow-hidden relative">
+              {ticket.image_url ? (
+                <img src={ticket.image_url} alt="Before" className="w-full h-full object-cover opacity-80 mix-blend-luminosity" />
+              ) : (
+                <div className="text-3xl grayscale">📸</div>
+              )}
+            </div>
+          </div>
+          <div className="bg-civic-900 rounded-lg p-2 border border-success-500/30">
+            <div className="text-xs text-success-400 mb-2 uppercase text-center font-bold">Resolved</div>
+            <div className="aspect-video bg-civic-800 rounded flex items-center justify-center overflow-hidden relative">
+              <div className="absolute inset-0 bg-success-500/10 z-10"></div>
+              <div className="text-3xl drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]">✨</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-civic-900/50 rounded-lg p-4 grid grid-cols-2 gap-4">
+          <div>
+            <div className="text-xs text-civic-400 uppercase">Department</div>
+            <div className="font-semibold capitalize text-sm">{ticket.department?.replace(/_/g, ' ') || 'City Services'}</div>
+          </div>
+          <div>
+            <div className="text-xs text-civic-400 uppercase">Time to Resolution</div>
+            <div className="font-semibold text-sm">
+              {ticket.status_log?.length > 1 
+                ? `${Math.max(1, Math.floor((new Date(ticket.status_log[ticket.status_log.length-1].timestamp) - new Date(ticket.created_at)) / (1000 * 60 * 60)))} Hours` 
+                : 'Rapid Action'}
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-6 text-center text-xs text-civic-500 font-mono">
+          Powered by CivicPulse AI & Community Governance
         </div>
       </div>
 

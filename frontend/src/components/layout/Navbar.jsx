@@ -28,7 +28,9 @@ export default function Navbar() {
             </Link>
             
             <div className="hidden sm:ml-8 sm:flex sm:space-x-4">
-              <NavLink to="/" active={isActive('/')}>{t('home')}</NavLink>
+              {(!currentUser || role === 'citizen') && (
+                <NavLink to="/" active={isActive('/')}>{t('home')}</NavLink>
+              )}
               
               {currentUser && role === 'citizen' && (
                 <>
@@ -38,7 +40,7 @@ export default function Navbar() {
                 </>
               )}
               
-              {currentUser && role === 'official' && (
+              {(currentUser && (role === 'official' || role === 'admin')) && (
                 <>
                   <NavLink to="/official" active={isActive('/official')}>{t('official_hub')}</NavLink>
                   <NavLink to="/heatmap" active={isActive('/heatmap')}>{t('heatmap')}</NavLink>
